@@ -22,3 +22,9 @@ commands.allow = ["ai_status"]
 [[permission]]
 identifier = "allow-ask-guide"
 commands.allow = ["ask_guide"]
+[[permission]]
+identifier = "allow-export-backup"
+commands.allow = ["export_backup"]
+[[permission]]
+identifier = "allow-read-backup"
+commands.allow = ["read_backup"]

@@ -11,6 +11,45 @@ struct Store {
     ai_busy: Mutex<bool>,
 }
 #[tauri::command]
+async fn export_backup(data: String) -> Result<bool, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        persistence::validate(&data)?;
+        let Some(path) = rfd::FileDialog::new()
+            .set_title("JSONバックアップを書き出す")
+            .add_filter("JSON", &["json"])
+            .set_file_name("craft-guide-backup.json")
+            .save_file()
+        else {
+            return Ok(false);
+        };
+        persistence::save(&path, &data)?;
+        Ok(true)
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+#[tauri::command]
+async fn read_backup() -> Result<Option<String>, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        let Some(path) = rfd::FileDialog::new()
+            .set_title("JSONバックアップを選択")
+            .add_filter("JSON", &["json"])
+            .pick_file()
+        else {
+            return Ok(None);
+        };
+        if std::fs::metadata(&path).map_err(|e| e.to_string())?.len() > 48 * 1024 * 1024 {
+            return Err("バックアップの上限は48MBです。".into());
+        }
+        let raw = std::fs::read_to_string(&path)
+            .map_err(|e| format!("バックアップを読み込めません: {e}"))?;
+        persistence::validate(&raw)?;
+        Ok(Some(raw))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+#[tauri::command]
 fn load_data(s: State<Store>) -> Result<Option<String>, String> {
     let _guard = s.lock.lock().map_err(|_| "保存処理が使用中です。")?;
     persistence::read(&s.path)
@@ -134,6 +173,8 @@ fn main() {
             save_data,
             recover_data,
             restore_data,
+            export_backup,
+            read_backup,
             choose_instance,
             rescan_instance,
             ai_status,

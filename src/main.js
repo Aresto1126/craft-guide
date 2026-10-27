@@ -134,8 +134,8 @@ root.addEventListener('click',event=>{
   if(action==='delete-note'){if(confirm('このノートを削除しますか？')){await transaction(s=>s.notes=s.notes.filter(n=>n.id!==id));render();}return;}
   if(action==='save-message'){noteDialog({title:'AIの解説',body:state.messages.find(m=>m.id===id).body});return;}
   if(action==='save-bill'){noteDialog({title:itemName(catalog(),selected)+' ×'+quantity+' の必要素材',body:Object.entries(bill.materials).map(([i,n])=>`${itemName(catalog(),i)} ×${n}`).join('\n')+'\n\n静的レシピに基づく計算。燃料・設備は別途。'});return;}
-  if(action==='export'){exportBackup();return;}
-  if(action==='import'){document.querySelector('#backup-input').click();return;}
+  if(action==='export'){if(native()){if(await invoke('export_backup',{data:JSON.stringify(state,null,2)}))toast('バックアップを書き出しました。');}else exportBackup();return;}
+  if(action==='import'){if(native()){const raw=await invoke('read_backup');if(raw)await importBackup({size:new Blob([raw]).size,text:async()=>raw});}else document.querySelector('#backup-input').click();return;}
   if(action==='recover'){if(confirm('前回保存のバックアップから復旧しますか？破損した元データも保持します。')){state=await storage.recover();loadError='';render();}return;}
   if(action==='ai-status'){aiStatus='認証状態を確認しています…';render();try{aiStatus=await invoke('ai_status');}catch(e){aiStatus=String(e);}render();return;}
   if(action==='copy-question'){await copy(buildPrompt(state,env().id,draftQuestion,catalog(),draftOnce));return;}
