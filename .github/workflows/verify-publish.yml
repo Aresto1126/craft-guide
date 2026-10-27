@@ -48,7 +48,7 @@ jobs:
           path: src-tauri/target/release/bundle/nsis/*.exe
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    needs: [web, windows]
+    needs: [web]
     runs-on: ubuntu-latest
     permissions:
       pages: write
