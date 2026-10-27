@@ -1,0 +1,24 @@
+[[permission]]
+identifier = "allow-load-data"
+commands.allow = ["load_data"]
+[[permission]]
+identifier = "allow-save-data"
+commands.allow = ["save_data"]
+[[permission]]
+identifier = "allow-recover-data"
+commands.allow = ["recover_data"]
+[[permission]]
+identifier = "allow-restore-data"
+commands.allow = ["restore_data"]
+[[permission]]
+identifier = "allow-choose-instance"
+commands.allow = ["choose_instance"]
+[[permission]]
+identifier = "allow-rescan-instance"
+commands.allow = ["rescan_instance"]
+[[permission]]
+identifier = "allow-ai-status"
+commands.allow = ["ai_status"]
+[[permission]]
+identifier = "allow-ask-guide"
+commands.allow = ["ask_guide"]

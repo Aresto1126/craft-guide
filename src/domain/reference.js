@@ -1,0 +1,7 @@
+// Small curated reference dataset; never presented as a scanned instance.
+const names={oak_log:'オークの原木',oak_planks:'オークの板材',stick:'棒',chest:'チェスト',hopper:'ホッパー',iron_ingot:'鉄インゴット',iron_ore:'鉄鉱石',furnace:'かまど',cobblestone:'丸石',crafting_table:'作業台',torch:'松明',coal:'石炭',iron_pickaxe:'鉄のツルハシ',glass:'ガラス',sand:'砂',bucket:'バケツ',rail:'レール'};
+const ing=(id,count)=>({choices:['minecraft:'+id],count});
+const make=(id,count,inputs,type='minecraft:crafting_shaped')=>({id:'minecraft:'+id,output:'minecraft:'+id,count,ingredients:inputs.map(([i,n])=>ing(i,n)),type,source:'内蔵参考データ（実環境未確認）'});
+export const referenceCatalog={items:Object.entries(names).map(([id,name])=>({id:'minecraft:'+id,name,mod:'minecraft'})),recipes:[
+make('oak_planks',4,[['oak_log',1]]),make('stick',4,[['oak_planks',2]]),make('chest',1,[['oak_planks',8]]),make('hopper',1,[['iron_ingot',5],['chest',1]]),make('iron_ingot',1,[['iron_ore',1]],'minecraft:smelting'),make('furnace',1,[['cobblestone',8]]),make('crafting_table',1,[['oak_planks',4]]),make('torch',4,[['coal',1],['stick',1]]),make('iron_pickaxe',1,[['iron_ingot',3],['stick',2]]),make('glass',1,[['sand',1]],'minecraft:smelting'),make('bucket',1,[['iron_ingot',3]]),make('rail',16,[['iron_ingot',6],['stick',1]])],tags:{},unsupported:[],warnings:['内蔵の小さな参考図鑑です。現在のゲーム環境やバージョンとの一致は未確認です。','製錬の燃料、設置用設備、確率出力は素材計算に含みません。']};
+export const itemName=(catalog,id)=>catalog.items.find(i=>i.id===id)?.name??id;

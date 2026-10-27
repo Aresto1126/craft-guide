@@ -1,0 +1,6 @@
+{
+ "$schema":"https://schema.tauri.app/config/2", "productName":"Craft Guide", "version":"0.1.0", "identifier":"jp.craftguide.desktop",
+ "build":{"beforeDevCommand":"npm run dev","beforeBuildCommand":"npm run build","devUrl":"http://localhost:1420","frontendDist":"../dist"},
+ "app":{"windows":[{"label":"main","title":"CRAFT GUIDE — 自分だけの攻略ガイド","width":1440,"height":960,"minWidth":780,"minHeight":600}],"security":{"csp":"default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost; worker-src 'self' blob:"}},
+ "bundle":{"active":true,"targets":["nsis"],"icon":["icons/icon.ico"],"windows":{"webviewInstallMode":{"type":"downloadBootstrapper"},"nsis":{"languages":["Japanese","English"],"displayLanguageSelector":false,"installMode":"currentUser"}}}
+}

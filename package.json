@@ -1,0 +1,6 @@
+{
+  "name": "craft-guide", "version": "0.1.0", "private": true, "type": "module",
+  "scripts": {"dev":"vite --host 127.0.0.1 --port 1420", "build":"vite build && node scripts/build-worker.mjs", "preview":"vite preview --host 127.0.0.1", "test":"node --test tests/*.test.js", "test:ui":"playwright test", "tauri":"tauri", "build:windows":"tauri build --bundles nsis"},
+  "dependencies": {"@tauri-apps/api":"^2.0.0", "fflate":"^0.8.2"},
+  "devDependencies": {"@playwright/test":"^1.56.0", "@tauri-apps/cli":"^2.0.0", "vite":"^7.0.0"}
+}
