@@ -2,6 +2,7 @@
 
 ## Authority and scope
 The user authorized all implementation phases together. Continue without phase approval prompts. Preserve existing projects. Create this new project under C:\CodexApp. Use reasonable defaults for small details; ask only for material missing requirements. Do not change AI models without explaining the recommendation.
+Use minimal reasoning for simple file operations, standard reasoning for ordinary implementation/tests, and sufficient analysis/verification for architecture or serious defects. Avoid repeated investigation, redundant work and unnecessary dependencies to conserve Work usage.
 
 ## Stack and architecture
 Tauri 2 Windows desktop, WebView2, Rust for native storage/OS operations, HTML/CSS/JavaScript ES modules, Vite. No React. Explain any additional library before adoption. Share views and domain logic with the browser edition. Separate UI, domain, validation, storage. Use a common platform adapter. Windows build and Web publishing are independent.

@@ -17,6 +17,11 @@ try{
  saved.environments.push({id:'native-fixture',name:'ネイティブ解析テスト',path:resolve('tests/fixtures/instance'),instructions:'',progress:'',catalog:null});await writeFile(join(dir,'state.json'),JSON.stringify(saved));await page.reload();
  await page.getByRole('button',{name:'設定',exact:true}).click();const fixture=page.locator('.environment-card').filter({hasText:'ネイティブ解析テスト'});await fixture.getByRole('button',{name:'再解析',exact:true}).click();await page.getByRole('status').filter({hasText:'再解析しました'}).waitFor();
  const scanned=JSON.parse(await readFile(join(dir,'state.json'),'utf8'));assert.equal(scanned.environments.find(e=>e.id==='native-fixture').catalog.recipes[0].output,'demo:gear');
+ // Explicit imported backup must restore even when the primary file is corrupt.
+ await writeFile(join(dir,'state.json'),'broken');await page.reload();await expect(page.getByRole('alert')).toContainText('保護');
+ page.on('dialog',d=>d.accept());await page.locator('#backup-input').setInputFiles({name:'restore.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(scanned))});await expect(page.getByRole('alert')).toHaveCount(0);
+ assert.equal(JSON.parse(await readFile(join(dir,'state.json'),'utf8')).version,1);
+ await page.getByRole('button',{name:'設定',exact:true}).click();
  await page.getByRole('tab',{name:'AI連携'}).click();await page.getByRole('button',{name:'Codexの認証状態を確認'}).click();await page.getByRole('status').filter({hasText:'ChatGPT認証'}).waitFor({timeout:30000});
  await page.getByRole('button',{name:'ホーム',exact:true}).click();await mkdir('artifacts',{recursive:true});await page.screenshot({path:'artifacts/windows-native.png',fullPage:true});
  let aiInference=false;
@@ -24,5 +29,5 @@ try{
   const answer=await page.evaluate(()=>window.__TAURI_INTERNALS__.invoke('ask_guide',{prompt:'これはアプリ連携の接続試験です。ツールやファイルを使わず「接続確認済み」とだけ回答してください。',consent:true}));
   assert.match(answer,/接続確認済み/);aiInference=true;
  }
- await writeFile('artifacts/native-check.json',JSON.stringify({testDataDir:dir,webview2:true,saveReload:true,nativeScan:true,chatGPTAuthentication:true,aiInference},null,2));console.log('PASS: actual WebView2 startup, Rust JSON save/reload, native fixture scan, ChatGPT auth check. AI inference: '+aiInference+' (synthetic connection test only).');
+ await writeFile('artifacts/native-check.json',JSON.stringify({testDataDir:dir,webview2:true,saveReload:true,nativeScan:true,corruptBackupRestore:true,chatGPTAuthentication:true,aiInference},null,2));console.log('PASS: actual WebView2 startup, Rust JSON save/reload, native fixture scan, corrupt backup restore, ChatGPT auth check. AI inference: '+aiInference+' (synthetic connection test only).');
 }finally{if(browser)await browser.close();proc.kill();}
