@@ -19,7 +19,7 @@ Corrupt or future data never overwritten; ambiguous recipes not asserted active;
 - [x] Implement native selected-root scanning and Web folder/archive scanning, test fixture extraction and unsupported forms. Limit untrusted input sizes.
 - [x] Implement responsive pixel UI, original SVG scenic backgrounds, environment settings, recipes, notes, instructions, explicit-send AI pane.
 - [x] Add Playwright end-to-end for settings, persistence, corrupt imports, backup, environment isolation, subpath and offline; build native installer, launch WebView2 and test native save/read/scan.
-- [ ] Fresh whole-project review; fix material findings; Git commit. Set up GitHub Actions and deploy only with available authentication. Document delivered artifacts and exact remaining gaps.
+- [x] Fresh whole-project review; fix material findings; Git commit. Set up GitHub Actions and deploy only with available authentication. Document delivered artifacts and exact remaining gaps.
 
 ## Execution ledger
 Initial: Node 24, npm 11, Rust/Cargo, Git available. Existing folders left intact. GitHub CLI not authenticated; user notified. Codex CLI installed and reports ChatGPT authentication; no inference made during inspection.
@@ -31,3 +31,5 @@ Review: fresh read-only reviewer found external-backup restore blocked during co
 Ruling: Use installed official Codex CLI exec instead of a custom app-server client — verified ChatGPT login and end-to-end response without paid API; avoids a larger protocol/auth implementation. Requires CLI on the user's PC; Web falls back to explicit copy.
 Ruling: Use original code-generated SVG scenery/icons rather than game assets — keeps assets local, light and redistributable; appearance is a stylized pixel interpretation.
 Ruling: Runtime MOD snapshots remain a future extension — no companion MOD was approved for installation; static data carries explicit limits, and special recipes are disclosed as unsupported.
+
+Final: Windows, Web and deploy CI jobs all succeeded (run 40605059244). Actual public URL verified. Release artifacts and source tag synchronized. See docs/VERIFICATION.md for exact tests and remaining compatibility limits.
